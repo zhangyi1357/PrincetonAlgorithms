@@ -62,19 +62,25 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     }
 
     private class ReverseIterator implements Iterator<Item> {
-        private int i;
+        private int[] permutation;
+        private int remainingItemNum;
 
         public ReverseIterator() {
-            i = 0;
+            remainingItemNum = tail;
+            permutation = new int[tail];
+            for (int i = 0; i < tail; ++i)
+                permutation[i] = i;
         }
 
         public boolean hasNext() {
-            return i < tail;
+            return remainingItemNum > 0;
         }
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
-            Item item = s[i++];
+            int index = StdRandom.uniform(remainingItemNum--);
+            Item item = s[permutation[index]];
+            permutation[index] = permutation[remainingItemNum];
             return item;
         }
 
