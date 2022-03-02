@@ -41,6 +41,7 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
     // remove and return a random item
     public Item dequeue() {
         validateQueueNotEmpty();
+        if (tail * 4 <= s.length) resize(s.length / 2);
         int index = StdRandom.uniform(tail);
         Item item = s[index];
         s[index] = s[--tail];
@@ -95,13 +96,13 @@ public class RandomizedQueue<Item> implements Iterable<Item> {
 
     private void validateQueueNotEmpty() {
         if (isEmpty())
-            throw new java.util.NoSuchElementException();
+            throw new NoSuchElementException();
     }
 
     public static void main(String[] args) {
         RandomizedQueue<Integer> rq = new RandomizedQueue<Integer>();
         int testTimes = 100, maxNum = 100;
-        
+
         for (int i = 0; i < testTimes; ++i)
             rq.enqueue(StdRandom.uniform(maxNum));
         StdOut.println("Now delete elements in the deque");
