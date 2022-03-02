@@ -164,10 +164,10 @@ public class Deque<Item> implements Iterable<Item> {
         //     StdOut.printf("%d ", dq.removeFirst());
         // }
         Deque<Integer> deque = new Deque<>();
-        deque.size();
+        // deque.size();
         deque.addFirst(2);
         deque.removeFirst();
-        deque.size();
+        // deque.size();
         deque.addFirst(5);
         for (int x : deque)
             StdOut.println(x);
