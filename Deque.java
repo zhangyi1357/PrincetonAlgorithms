@@ -5,7 +5,6 @@
  **************************************************************************** */
 
 import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.StdRandom;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -84,17 +83,20 @@ public class Deque<Item> implements Iterable<Item> {
 
     private class DequeSequenceIterator implements Iterator<Item> {
         private int i;
+        private int count;
 
         public DequeSequenceIterator() {
             i = head;
+            count = 0;
         }
 
         public boolean hasNext() {
-            return i != tail;
+            return count < sz;
         }
 
         public Item next() {
             if (!hasNext()) throw new NoSuchElementException();
+            ++count;
             Item item = s[i];
             i = getIndex(i + 1);
             return item;
@@ -112,7 +114,7 @@ public class Deque<Item> implements Iterable<Item> {
 
     private void validateDequeNotEmpty() {
         if (isEmpty())
-            throw new java.util.NoSuchElementException();
+            throw new NoSuchElementException();
     }
 
     // get index of the element
@@ -142,25 +144,38 @@ public class Deque<Item> implements Iterable<Item> {
 
     // unit testing (required)
     public static void main(String[] args) {
-        Deque<Integer> dq = new Deque<Integer>();
-        int testTimes = 10, maxNum = 100;
-        for (int i = 0; i < testTimes; ++i) {
-            dq.addFirst(StdRandom.uniform(maxNum));
-            dq.addLast(StdRandom.uniform(maxNum));
-        }
-        StdOut.println("Now delete elements in the deque");
-        for (int i = 0; i < testTimes / 2; ++i) {
-            StdOut.printf("%d %d ", dq.removeFirst(), dq.removeLast());
-        }
-        StdOut.println("\nNow print elements remaining in the deque");
-        for (int x : dq) {
-            StdOut.print(x + " ");
-        }
-        StdOut.println("\nSize of the dq now is " + dq.size());
-        StdOut.println("Now deleteing all of the elements in the deque");
-        while (!dq.isEmpty()) {
-            StdOut.printf("%d ", dq.removeFirst());
-        }
+        // Deque<Integer> dq = new Deque<Integer>();
+        // int testTimes = 100, maxNum = 100;
+        // for (int i = 0; i < testTimes; ++i) {
+        //     dq.addFirst(StdRandom.uniform(maxNum));
+        //     dq.addLast(StdRandom.uniform(maxNum));
+        // }
+        // StdOut.println("Now delete elements in the deque");
+        // for (int i = 0; i < testTimes / 2; ++i) {
+        //     StdOut.printf("%d %d ", dq.removeFirst(), dq.removeLast());
+        // }
+        // StdOut.println("\nNow print elements remaining in the deque");
+        // for (int x : dq) {
+        //     StdOut.print(x + " ");
+        // }
+        // StdOut.println("\nSize of the dq now is " + dq.size());
+        // StdOut.println("Now deleteing all of the elements in the deque");
+        // while (!dq.isEmpty()) {
+        //     StdOut.printf("%d ", dq.removeFirst());
+        // }
+        Deque<Integer> deque = new Deque<>();
+        deque.size();
+        deque.addFirst(2);
+        deque.removeFirst();
+        deque.size();
+        deque.addFirst(5);
+        for (int x : deque)
+            StdOut.println(x);
+        deque.addLast(7);
+        deque.addLast(8);
+        deque.addLast(9);
+        for (int x : deque)
+            StdOut.println(x);
 
     }
 
