@@ -24,6 +24,10 @@ public class BruteCollinearPoints {
             }
         }
 
+        Point[] copyPoints = new Point[points.length];
+        for (int i = 0; i < points.length; ++i) {
+            copyPoints[i] = points[i];
+        }
         Arrays.sort(points, 0, points.length);
 
         ArrayList<LineSegment> segments = new ArrayList<LineSegment>();
@@ -50,6 +54,9 @@ public class BruteCollinearPoints {
             lineSegments[i] = segments.get(i);
         }
 
+        for (int i = 0; i < points.length; ++i) {
+            points[i] = copyPoints[i];
+        }
     }
 
     public int numberOfSegments() { // the number of line segments
@@ -61,6 +68,6 @@ public class BruteCollinearPoints {
     }
 
     public static void main(String[] args) {
-        
+
     }
 }

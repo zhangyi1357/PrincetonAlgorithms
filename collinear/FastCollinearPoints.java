@@ -30,10 +30,13 @@ public class FastCollinearPoints {
             }
         }
 
+
         ArrayList<LineSegment> segments = new ArrayList<LineSegment>();
         Point[] sortedPoints = new Point[points.length];
+        Point[] copyPoints = new Point[points.length];
         for (int i = 0; i < points.length; ++i) {
             sortedPoints[i] = points[i];
+            copyPoints[i] = points[i];
         }
         Arrays.sort(sortedPoints, 0, points.length);
         for (int i = 0; i < points.length; ++i) {
@@ -67,6 +70,9 @@ public class FastCollinearPoints {
         lineSegments = new LineSegment[n];
         for (int i = 0; i < n; ++i)
             lineSegments[i] = segments.get(i);
+
+        for (int i = 0; i < points.length; ++i)
+            points[i] = copyPoints[i];
     }
 
     public int numberOfSegments() { // the number of line segments
