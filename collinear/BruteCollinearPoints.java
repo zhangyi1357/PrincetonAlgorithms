@@ -4,6 +4,10 @@
  *  Description: BruteCollinearPoints detection
  **************************************************************************** */
 
+import edu.princeton.cs.algs4.In;
+import edu.princeton.cs.algs4.StdDraw;
+import edu.princeton.cs.algs4.StdOut;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -36,10 +40,12 @@ public class BruteCollinearPoints {
                 double ij = points[i].slopeTo(points[j]);
                 for (int k = j + 1; k < points.length; ++k) {
                     double ik = points[i].slopeTo(points[k]);
+                    // StdOut.printf("ij : %f, ik: %f, i: %d, j: %d\n", ij, ik, i, j);
                     if (ij != ik)
-                        break;
+                        continue;
                     for (int m = k + 1; m < points.length; ++m) {
                         double im = points[i].slopeTo(points[m]);
+                        // StdOut.printf("ij: %f, ik: %f\n", ij, im);
                         if (ij == im) {
                             segments.add(new LineSegment(points[i], points[m]));
                         }
@@ -69,5 +75,31 @@ public class BruteCollinearPoints {
 
     public static void main(String[] args) {
 
+        // read the n points from a file
+        In in = new In(args[0]);
+        int n = in.readInt();
+        Point[] points = new Point[n];
+        for (int i = 0; i < n; i++) {
+            int x = in.readInt();
+            int y = in.readInt();
+            points[i] = new Point(x, y);
+        }
+
+        // draw the points
+        StdDraw.enableDoubleBuffering();
+        StdDraw.setXscale(0, 32768);
+        StdDraw.setYscale(0, 32768);
+        for (Point p : points) {
+            p.draw();
+        }
+        StdDraw.show();
+
+        // print and draw the line segments
+        BruteCollinearPoints collinear = new BruteCollinearPoints(points);
+        for (LineSegment segment : collinear.segments()) {
+            StdOut.println(segment);
+            segment.draw();
+        }
+        StdDraw.show();
     }
 }
