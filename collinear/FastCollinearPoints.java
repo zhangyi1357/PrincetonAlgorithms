@@ -30,37 +30,41 @@ public class FastCollinearPoints {
             }
         }
 
-
         ArrayList<LineSegment> segments = new ArrayList<LineSegment>();
         Point[] sortedPoints = new Point[points.length];
-        Point[] copyPoints = new Point[points.length];
         for (int i = 0; i < points.length; ++i) {
-            sortedPoints[i] = points[i];
-            copyPoints[i] = points[i];
-        }
-        Arrays.sort(sortedPoints, 0, points.length);
-        for (int i = 0; i < points.length; ++i) {
+            // copy the points to sortedPoints
             for (int j = 0; j < points.length; ++j)
-                points[j] = sortedPoints[j];
-            Arrays.sort(points, i + 1, points.length, points[i].slopeOrder());
-            int start = i + 1, j;
-            while (start + 2 < points.length) {
-                if (points[i].compareTo(points[start]) > 0) {
+                sortedPoints[j] = points[j];
+            // sort the sortedPoints by slope order to points[i]
+            Arrays.sort(sortedPoints, 0, points.length, points[i].slopeOrder());
+
+            // start from 1 cause sortedPoints[0] is points[i] itself
+            int start = 1;
+            while (start + 2 < points.length) { // at least 3 points needed
+                if (points[i].compareTo(sortedPoints[start]) > 0) {
                     ++start;
                     continue;
                 }
-                double iStart = points[i].slopeTo(points[start]);
-                j = 1;
+                double iStart = points[i].slopeTo(sortedPoints[start]);
+                int j = 1;
                 while (start + j < points.length
-                        && points[i].slopeTo(points[start + j]) == iStart)
+                        && points[i].slopeTo(sortedPoints[start + j]) == iStart
+                        && points[i].compareTo(sortedPoints[start + j]) <= 0)
                     ++j;
-                if (j > 2) { // collinear happens
-                    Point[] tmpPoints = new Point[j + 1];
-                    tmpPoints[j] = points[i];
+                if (start + j < points.length
+                        && points[i].slopeTo(sortedPoints[start + j]) == iStart
+                        && points[i].compareTo(sortedPoints[start + j]) > 0) {
+                    start = start + j;
+                    continue;
+                }
+                // collinear happens
+                if (j > 2) {
+                    Point[] tmpPoints = new Point[j];
                     for (int k = 0; k < j; ++k)
-                        tmpPoints[k] = points[start + k];
+                        tmpPoints[k] = sortedPoints[start + k];
                     Arrays.sort(tmpPoints);
-                    segments.add(new LineSegment(points[i], tmpPoints[j]));
+                    segments.add(new LineSegment(points[i], tmpPoints[j - 1]));
                 }
                 start = start + j;
             }
@@ -70,9 +74,6 @@ public class FastCollinearPoints {
         lineSegments = new LineSegment[n];
         for (int i = 0; i < n; ++i)
             lineSegments[i] = segments.get(i);
-
-        for (int i = 0; i < points.length; ++i)
-            points[i] = copyPoints[i];
     }
 
     public int numberOfSegments() { // the number of line segments
